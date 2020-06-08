@@ -11,7 +11,7 @@ using namespace std;
 
 const char SPECIAL_CHARS[10] = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
 
-enum TYPE
+enum class TYPE
 {
     STRING,
     CHAR,
@@ -69,14 +69,14 @@ public:
     Component(TYPE i_type, WordList* i_words) : words(i_words), type(i_type)
     {
         switch(type){
-        case STRING:            
+        case TYPE::STRING:            
             word = words->get_word(rand() % (words->get_size() - 1)); //Define Word
             toupper(word[0]);
             break;
-        case CHAR:            
+        case TYPE::CHAR:            
             character = SPECIAL_CHARS[rand() % 9]; //[0 - 9]
             break;
-        case INT:
+        case TYPE::INT:
             number = rand() % 9989 + 10; //[10 - 9999]
             break;
         default: 
@@ -89,13 +89,13 @@ public:
     {
         switch (type)
         {
-        case STRING:
+        case TYPE::STRING:
             cout << word;
             break;
-        case INT:
+        case TYPE::INT:
             cout << number;
             break;
-        case CHAR:
+        case TYPE::CHAR:
             cout << character;
             break;
         default:
@@ -118,11 +118,11 @@ class Password
 public:
     Password(int num_sections, WordList* i_words) : words(i_words)
     {
-        components.push_back(new Component(INT, words));
-        components.push_back(new Component(CHAR, words));
+        components.push_back(new Component(TYPE::INT, words));
+        components.push_back(new Component(TYPE::CHAR, words));
         for (int i = 0; i < num_sections - 2; i++)
         {
-            components.push_back(new Component(STRING, words));
+            components.push_back(new Component(TYPE::STRING, words));
         }
         random_shuffle(components.begin(), components.end());
 
@@ -134,14 +134,14 @@ public:
         index -= 1; 
         switch (components[index]->get_type())
         {
-        case STRING:
-            components[index] = new Component(STRING, words);
+        case TYPE::STRING:
+            components[index] = new Component(TYPE::STRING, words);
             break;
-        case INT:
-            components[index] = new Component(INT, words);
+        case TYPE::INT:
+            components[index] = new Component(TYPE::INT, words);
             break;
-        case CHAR:
-            components[index] = new Component(CHAR, words);
+        case TYPE::CHAR:
+            components[index] = new Component(TYPE::CHAR, words);
             break;
         default:
             exit(2);
@@ -153,14 +153,14 @@ public:
     void print_password()
     {
         cout << endl << "Sections: ";
-        for (int i = 0; i < components.size(); i++)
+        for (unsigned int i = 0; i < components.size(); i++)
         {
             components[i]->print();
             cout << "\t";
         }
 
         cout << endl << "Password:\t";
-        for (int i = 0; i < components.size(); i++)
+        for (unsigned int i = 0; i < components.size(); i++)
         {
             components[i]->print();
         }
@@ -171,57 +171,58 @@ public:
 
 int main()
 {  
-    const double kps = 17042497.3; 
-    /* 
-        keys per second. can be used to calculate 
-        how long it would take to brute force crack 
-        the generated password 
-    */
-    srand(time(NULL));
-    
-    cout << "Enter # of Password Sections (Max: 10): " << endl;
-    int num_sections = 0;
-    cin >> num_sections;
-    while (cin.fail())
+    while (true)
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Please try again: ";
+        const double kps = 17042497.3;
+        /*
+            keys per second. can be used to calculate
+            how long it would take to brute force crack
+            the generated password
+        */
+        srand(int(time(NULL)));
+
+        cout << "Enter # of Password Sections (Max: 10, Recommended: 5): " << endl;
+        int num_sections = 0;
         cin >> num_sections;
-    }
-
-    if (num_sections > 10)
-    {
-        num_sections = 10;
-    }
-    else if (num_sections <= 0)
-    {
-        num_sections = 1;
-    }
-    
-
-    //Actual program running here
-    WordList* words = new WordList("words.txt");
-    Password password(num_sections, words);
-    
-    int change = 0;
-    do {
-        cout << "To change a component, enter its corresponding index (1 - " << num_sections << ") or 0 to exit: ";
-        cin >> change;
-        while (cin.fail() || change > num_sections)
+        while (cin.fail())
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Please try again: ";
-            cin >> change;
+            cin >> num_sections;
         }
-        if (change != 0)
+
+        if (num_sections > 10)
         {
-            password.reroll(change);
+            num_sections = 10;
         }
-    } while (change != 0);
+        else if (num_sections <= 0)
+        {
+            num_sections = 1;
+        }
 
 
+        //Actual program running here
+        WordList* words = new WordList("words.txt");
+        Password password(num_sections, words);
+
+        int change = 1;
+        do {
+            cout << "To change a component, enter its corresponding index (1 - " << num_sections << ") or 0 to start a new password: ";
+            cin >> change;
+            while (cin.fail() || change > num_sections)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Please try again: ";
+                cin >> change;
+            }
+            if (change != 0)
+            {
+                password.reroll(change);
+            }
+        } while (change != 0);
+    }
 
     return 0;
 }
