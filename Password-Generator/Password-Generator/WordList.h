@@ -8,6 +8,7 @@ class WordList
     vector<string> words;
 public:
     WordList(string filename);
+
     string get_word(int index);
     int get_size();
 };

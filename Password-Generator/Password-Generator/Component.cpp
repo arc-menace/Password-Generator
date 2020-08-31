@@ -5,7 +5,7 @@ Component::Component(TYPE i_type, WordList* i_words) : words(i_words), type(i_ty
     switch (type) {
     case TYPE::STRING:
         word = words->get_word(rand() % (words->get_size() - 1)); //Define Word
-        toupper(word[0]);
+        word[0] = toupper(word[0]);
         break;
     case TYPE::CHAR:
         character = SPECIAL_CHARS[rand() % 9]; //[0 - 9]

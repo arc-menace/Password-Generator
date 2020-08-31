@@ -15,7 +15,7 @@ WordList::WordList(string filename)
     while (inf >> input)
     {
         words.push_back(input);
-        if (words.size() % 1000 == 0) //Basic loading "animation"
+        if (words.size() % 1500 == 0) //Basic loading "animation"
         {
             cout << ".";
         }
