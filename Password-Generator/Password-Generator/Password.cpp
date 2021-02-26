@@ -34,6 +34,11 @@ void Password::reroll(int index) //function input starts at 1
     print_password();
 }
 
+void Password::shuffle_password()
+{
+    random_shuffle(components.begin(), components.end());
+}
+
 void Password::print_password()
 {
     cout << endl << "Sections: ";

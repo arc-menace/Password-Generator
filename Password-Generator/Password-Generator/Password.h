@@ -13,6 +13,7 @@ class Password
 public:
     Password(int num_sections, WordList* i_words);
     void reroll(int index); //function input starts at 1
+    void shuffle_password();
     void print_password();
 };
 
