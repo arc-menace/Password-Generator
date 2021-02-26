@@ -26,9 +26,9 @@ int main()
         Password password(num_sections, words);
         int change = 1;
         do {
-            cout << "To change a component, enter its corresponding index (1 - " << num_sections << "), 0 to start a new password or 11 to exit: ";
+            cout << "To change a component, enter its corresponding index (1 - " << num_sections << "), 0 to start a new password, 11 to shuffle the password or 12 to exit: ";
             cin >> change;
-            while (cin.fail() || change > 11)
+            while (cin.fail() || change > 12)
             {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -36,6 +36,11 @@ int main()
                 cin >> change;
             }
             if (change == 11)
+            {
+                password.shuffle_password();
+                password.print_password();
+            }
+            else if (change == 12)
             {
                 exit(0);
             }
