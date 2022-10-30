@@ -17,15 +17,17 @@
         <button type="button" class="btn btn-primary main-buttons" @onclick="GeneratorService.ShufflePassword">ShuffleOrder</button>
     </div>
  
-    <div class="d-flex flex-row password">
-        <EditForm class="d-flex flex-row" Model="@GeneratorService">
+    <div class="d-flex flex-row flex-wrap password">
+        <EditForm class="d-flex flex-row flex-wrap" Model="@GeneratorService">
             @foreach(PasswordComponent component in GeneratorService.PasswordComponents)
             {
                 <InputText class="form-control component" @bind-Value="@component.Value" />
             }
         </EditForm>
+        <div class="copy-button-container">
+            <CopyToClipboard Text="@GeneratorService.Password" />
+        </div>
         
-        <CopyToClipboard Text="@GeneratorService.Password" />
     </div>
 </div>
 

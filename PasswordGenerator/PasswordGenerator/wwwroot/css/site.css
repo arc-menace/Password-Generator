@@ -71,7 +71,8 @@ a, .btn-link {
 }
 
 .main-buttons {
-    width: 250px;
+    min-width: 50%;
+    max-width: 250px;
     margin-right: 5px;
     margin-left: 5px;
 }
@@ -87,9 +88,16 @@ a, .btn-link {
 .component {
     margin-right: 5px;
     margin-left: 5px;
+    min-width: 150px;
+    max-width: 200px;
 }
 
 .title {
     margin-top: 100px;
     margin-bottom: 100px;
+}
+
+.copy-button-container {
+    margin-right: auto;
+    margin-left: auto;
 }
