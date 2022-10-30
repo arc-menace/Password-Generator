@@ -1,0 +1,44 @@
+﻿@using PasswordGenerator.Components
+@using PasswordGenerator.Services
+@inject IJSRuntime JSRuntime
+@inject GeneratorService GeneratorService
+@page "/"
+
+<PageTitle>Index</PageTitle>
+
+
+<div class="d-flex flex-column align-items-center">
+    <div class="title">
+        <h1>Password Generator</h1>
+    </div>
+
+    <div class="d-flex flex-row buttons">
+        <button type="button" class="btn btn-primary main-buttons" @onclick="GeneratorService.GenerateNewPassword">Generate</button>
+        <button type="button" class="btn btn-primary main-buttons" @onclick="GeneratorService.ShufflePassword">ShuffleOrder</button>
+    </div>
+ 
+    <div class="d-flex flex-row password">
+        <EditForm class="d-flex flex-row" Model="@GeneratorService">
+            @foreach(PasswordComponent component in GeneratorService.PasswordComponents)
+            {
+                <InputText class="form-control component" @bind-Value="@component.Value" />
+            }
+        </EditForm>
+        
+        <CopyToClipboard Text="@GeneratorService.Password" />
+    </div>
+</div>
+
+
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        GeneratorService.GenerateNewPassword();
+
+        base.OnInitialized();
+    }
+}
+
+

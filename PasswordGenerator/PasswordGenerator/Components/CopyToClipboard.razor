@@ -1,0 +1,21 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div class="form-inline">
+    <button type="button" class="btn btn-primary copy-button" @onclick="@(async () => await CopyTextToClipboard())">@CopyButtonText</button>
+</div>
+
+@code {
+    [Parameter] 
+    public string Text { get; set; }
+
+    private string CopyButtonText { get; set; } = "Copy";
+
+    private async Task CopyTextToClipboard()
+    {
+        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", Text);
+        CopyButtonText = "Copied!";
+        StateHasChanged();
+        await Task.Delay(1500);
+        CopyButtonText = "Copy";
+    }
+}
