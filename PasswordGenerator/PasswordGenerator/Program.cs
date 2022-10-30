@@ -9,7 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 string wordFilePath = "words.txt";
-builder.Services.AddSingleton(x => new GeneratorService(wordFilePath));
+builder.Services.AddScoped(x => new GeneratorService(wordFilePath));
 
 var app = builder.Build();
 
