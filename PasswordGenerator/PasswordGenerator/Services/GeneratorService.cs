@@ -19,7 +19,7 @@ namespace PasswordGenerator.Services
                 return stringBuilder.ToString();
             }
         }
-        public List<PasswordComponent>? PasswordComponents { get; set; }
+        public List<PasswordComponent> PasswordComponents { get; set; }
 
         private List<string>? Words { get; set; }
 
@@ -30,6 +30,7 @@ namespace PasswordGenerator.Services
         public GeneratorService(string wordFilePath)
         {
             Random = new();
+            PasswordComponents = new();
 
             LoadWords(wordFilePath);
         }
@@ -80,9 +81,7 @@ namespace PasswordGenerator.Services
                 {
                     n--;
                     int k = Random.Next(n + 1);
-                    PasswordComponent value = PasswordComponents[k];
-                    PasswordComponents[k] = PasswordComponents[n];
-                    PasswordComponents[n] = value;
+                    (PasswordComponents[n], PasswordComponents[k]) = (PasswordComponents[k], PasswordComponents[n]);
                 }
             }
         }
